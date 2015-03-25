@@ -17,14 +17,14 @@ import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.ling.CorefCoreAnnotations.CorefChainAnnotation;
+import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
-import edu.stanford.nlp.trees.semgraph.SemanticGraph;
-import edu.stanford.nlp.trees.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
 import edu.stanford.nlp.util.CoreMap;
 
 /**
@@ -152,10 +152,10 @@ public class NLPParser
 		        String pos = token.get(PartOfSpeechAnnotation.class);
 		        // this is the NER label of the token
 		        String ne = token.get(NamedEntityTagAnnotation.class); 
-		        System.out.println(token.word() + " \t:\t " + word + " \t:\t " + pos + " \t:\t " + ne);
+//		        System.out.println(token.word() + " \t:\t " + word + " \t:\t " + pos + " \t:\t " + ne);
 		    }
 		    
-		    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//		    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			semanticDepList.add(sentence.get(CollapsedCCProcessedDependenciesAnnotation.class));
 		}
 		return semanticDepList;
@@ -213,7 +213,7 @@ public class NLPParser
 		{
 			System.out.println(c.getRepresentativeMention());
 			System.out.println();
-			for(CorefMention cm : c.getCorefMentions())
+			for(CorefMention cm : c.getMentionsInTextualOrder())
 			{
 				System.out.println(cm);
 				System.out.println(cm.corefClusterID);

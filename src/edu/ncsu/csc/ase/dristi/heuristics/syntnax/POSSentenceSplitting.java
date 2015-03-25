@@ -166,7 +166,7 @@ public class POSSentenceSplitting {
 					sentenceList.add(NLPUtil.getSentnce(candidate));
 				}
 			}
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			logger.error("Error in applying POS Reduction", e);
 		}
 		if (sentenceList.size() == 0) {
@@ -176,10 +176,13 @@ public class POSSentenceSplitting {
 	}
 
 	public static void main(String[] args) {
-		String sentence = "This implementation of the DELETE operation deletes the bucket named in the URI.";
-		POSSentenceSplitting pr = POSSentenceSplitting.getInstance();
+//		String sentence = "This implementation of the DELETE operation deletes the bucket named in the URI.";
+		String sentence = "Learn to Draw Anime Manga : Kid or adult, it does not matter. It can be very hard to pick up a How-to-Draw Anime or Manga book for the first time and not base your entire style on that particular artist is style. Develop your own unique style here. You can create a style which consists of many Anime and Manga things!";
+        POSSentenceSplitting pr = POSSentenceSplitting.getInstance();
+
 		for (String sen : pr.applyReduction(sentence)) {
-			System.err.println(sen);
+//			System.err.println(sen);
+            System.out.println(sen);
 		}
 
 	}

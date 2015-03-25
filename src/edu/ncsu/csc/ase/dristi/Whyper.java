@@ -1,5 +1,6 @@
 package edu.ncsu.csc.ase.dristi;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import edu.ncsu.csc.ase.dristi.knowledge.Knowledge;
 import edu.ncsu.csc.ase.dristi.knowledge.KnowledgeAtom;
 import edu.ncsu.csc.ase.dristi.logging.MyLoggerFactory;
 import edu.ncsu.csc.ase.dristi.util.ConsoleUtil;
-import edu.stanford.nlp.trees.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraph;
 
 public class Whyper {
 
@@ -29,33 +30,79 @@ public class Whyper {
 	private Permission permission = Permission.Read_Contact;
 
 	public static void main(String[] args) {
-		Whyper instance = new Whyper();
-		try {
-			String message = "Enter The Sentnce =>";
-			String s = ConsoleUtil.readConsole(message);
-			while (s.length() > 0) {
+        Whyper instance = new Whyper();
+//        String des_dir = '';
+//        File desFile = new File(des_dir);
+//        File[] files = desFile.listFiles();
 
-				if (instance.isPermissionSentnce(s)) {
-					System.err.println("Describes Permission!");
-				} else {
-					System.err.println("Does Not Describe Permission!");
-				}
-				s = ConsoleUtil.readConsole(message);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+        String pathname = "C:\\Users\\purejade\\PycharmProjects\\BYSJ\\READ_CONTACTS.des";
+        File filename = new File(pathname);
+        ArrayList<String> lines = new ArrayList<String>();
+        try {
+            InputStreamReader reader = new InputStreamReader(new FileInputStream((filename)));
+            BufferedReader br = new BufferedReader(reader);
+            String line = br.readLine();
+            while (line != null) {
+                lines.add(new String(line));
+                line = br.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BufferedWriter out = null;
+        try {
+            File writename = new File("C:\\Users\\purejade\\PycharmProjects\\BYSJ\\contact-1.txt"); // 相对路径，如果没有则要建立一个新的output。txt文件
+            writename.createNewFile(); // 创建新文件
+            out = new BufferedWriter(new FileWriter(writename));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+//			String message = "Enter The Sentnce =>";
+//			String s = ConsoleUtil.readConsole(message);
+//        String message = "Enter the sentnce";
+        int size = lines.size();
+        for (int i = 0; i < size; i++) {
+            if(i<251) continue;
+            String line = lines.get(i);
+            if (line.length() > 0) {
+                try {
+//                    System.out.println(line);
+                    if (instance.isPermissionSentnce(line)) {
+                        System.out.println(i + "| Describes Permission!");
+                        out.write(i + " Describes Permission!\n");
+                        out.flush();
+                    } else {
+                        System.out.println(i + " Does Not Describe Permission!");
+                        out.write(i + "| Does Not Describe Permission!\n");
+                        out.flush();
+                    }
+                } catch (Exception e) {
+                    System.out.println("error" + i);
+//                    out.write(i + " | error");
+                }
+            }
+        }
+        try {
+            out.flush();
+            out.close();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 	public boolean isPermissionSentnce(String sentnce) {
 
 		// Only the first Sentence is considered so provide input sentence by
 		// sentence
-		SemanticGraph semdep = NLPParser.getInstance()
-				.getStanfordDependencies(sentnce).get(0);
-		Tuple t = TextAnalysisEngine.parse(semdep);
-		return isDescribingPermission(t);
+        try {
+            SemanticGraph semdep = NLPParser.getInstance().getStanfordDependencies(sentnce).get(0);
+            Tuple t = TextAnalysisEngine.parse(semdep);
+            return isDescribingPermission(t);
+        } catch(Exception e) {
+            return false;
+        }
 	}
 
 	private boolean isDescribingPermission(Tuple t) {

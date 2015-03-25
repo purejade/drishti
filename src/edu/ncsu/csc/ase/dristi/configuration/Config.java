@@ -20,7 +20,7 @@ public class Config
 	/**
 	 * Path to folder containing WordNet Files
 	 */
-	public static final String WORD_NET_PATH = "C:\\rpandita\\WordNet-3.0";
+	public static final String WORD_NET_PATH = "C:\\Program Files (x86)\\WordNet\\2.1";
 	
 	/**
 	 * Path to WordNet Configuration File
