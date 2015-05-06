@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.didion.jwnl.data.Exc;
+import org.omg.CORBA.PERSIST_STORE;
 import org.slf4j.Logger;
 
 import edu.ncsu.csc.ase.dristi.datastructure.ITuple;
@@ -27,70 +29,139 @@ public class Whyper {
 	// Change the assignment to refer to different permission
 	// Current permissions supported are Read_Contacts, Read_Calendar,
 	// Record_Audio
-	private Permission permission = Permission.Read_Contact;
+	 static  Permission permission = Permission.Read_Contact;
 
 	public static void main(String[] args) {
         Whyper instance = new Whyper();
-//        String des_dir = '';
-//        File desFile = new File(des_dir);
-//        File[] files = desFile.listFiles();
-
-        String pathname = "C:\\Users\\purejade\\PycharmProjects\\BYSJ\\READ_CONTACTS.des";
-        File filename = new File(pathname);
-        ArrayList<String> lines = new ArrayList<String>();
+        BufferedWriter finalout = null;
         try {
-            InputStreamReader reader = new InputStreamReader(new FileInputStream((filename)));
-            BufferedReader br = new BufferedReader(reader);
-            String line = br.readLine();
-            while (line != null) {
-                lines.add(new String(line));
-                line = br.readLine();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            File finalresult = new File("C:\\Users\\purejade\\PycharmProjects\\BYSJ\\LAB1-2\\final.txt");
+            finalresult.createNewFile();
+            finalout = new BufferedWriter(new FileWriter(finalresult));
+        }catch (Exception e) {
             e.printStackTrace();
         }
-        BufferedWriter out = null;
+//        String[] permissions = {"READ_SMS", "READ_CONTACTS", "READ_CALENDAR"};
+        String[] permissions = {"READ_SMS"};
+        for (int cnt = 0; cnt < permissions.length; cnt++) {
+//            String des_dir = "C:\\Users\\purejade\\PycharmProjects\\BYSJ\\"+permissions[cnt];
+            String des_dir = "G:\\FtpDir\\RESULT\\PLAY_APP\\MODDES-3";
+            System.out.println(des_dir);
+            File desFile = new File(des_dir);
+            File[] files = desFile.listFiles();
+            BufferedWriter out = null;
+            BufferedWriter out2 = null;
+            try {
+                String tmpfile = "";
+                if(permissions[cnt] == "READ_SMS") {
+                    tmpfile = "sms";
+                    permission = Permission.Read_Contact;
+                }
+                else if(permissions[cnt] == "READ_CONTACTS") {
+                    tmpfile = "contact";
+                    permission = Permission.Read_Contact;
+                }
+                else if(permissions[cnt] == "READ_CALENDAR") {
+                    tmpfile = "calendar";
+                    permission = Permission.Read_Calendar;
+                }
+                File writename = new File("C:\\Users\\purejade\\PycharmProjects\\BYSJ\\LAB1-2\\"+tmpfile+".txt");
+                File timefile = new File("C:\\Users\\purejade\\PycharmProjects\\BYSJ\\LAB1-2\\"+tmpfile+"_time.txt");
+                timefile.createNewFile();
+                out2 = new BufferedWriter(new FileWriter(timefile));
+                writename.createNewFile(); // 创建新文件
+                out = new BufferedWriter(new FileWriter(writename));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            for (int i = 6337; i < files.length; i++) {
+                long startTime = System.currentTimeMillis();   //获取开始时间
+                File filename = files[i];
+                ArrayList<String> lines = new ArrayList<String>();
+                try {
+                    InputStreamReader reader = new InputStreamReader(new FileInputStream((filename)));
+                    BufferedReader br = new BufferedReader(reader);
+                    String line = br.readLine();
+                    while (line != null) {
+                        lines.add(new String(line));
+                        line = br.readLine();
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int size = lines.size();
+                boolean flag = false;
+                for (int j = 0; j < size; j++) {
+                    String line = lines.get(j);
+                    if (line.length() > 0) {
+                        try {
+                            String[] items = line.split(",");
+                            if (items.length > 5) {
+                                line = items[0];
+                                for (int k = 1; k < items.length; k++) {
+                                    if (items[k].length() > 10)
+                                        lines.add(items[k]);
+                                }
+                                size = lines.size();
+                            }
+                            if (line.length() < 10) continue;
+                            String newline = new String(line);
+                            if (instance.isPermissionSentnce(line)) {
+                                System.out.println(i + "| Describes Permission!");
+                                out.write(i + "| " + filename.getName() + "| Describes Permission!\n");
+                                finalout.write(permission + "|" + filename.getName() + "|" + newline+"\n");
+                                finalout.flush();
+                                out.flush();
+                                flag = true;
+                                break;
+                            }
+                        } catch (Exception e) {
+                            System.out.println("error" + i);
+                            //                    out.write(i + " | error");
+                        }
+                    }
+                }
+                if (flag == false) {
+                    try {
+                        System.out.println(i + " Does Not Describe Permission!");
+                        out.write(i + "| " + filename.getName() + "| Does Not Describe Permission!\n");
+                        out.flush();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    long endTime = System.currentTimeMillis(); //获取结束时间
+                    out2.write(filename.getName() + "|" + (endTime - startTime)+"\n");
+                    out2.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                out.flush();
+                out.close();
+                out2.flush();
+                out2.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
         try {
-            File writename = new File("C:\\Users\\purejade\\PycharmProjects\\BYSJ\\contact-1.txt"); // 相对路径，如果没有则要建立一个新的output。txt文件
-            writename.createNewFile(); // 创建新文件
-            out = new BufferedWriter(new FileWriter(writename));
-        } catch (IOException e) {
+            finalout.flush();
+            finalout.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 //			String message = "Enter The Sentnce =>";
 //			String s = ConsoleUtil.readConsole(message);
 //        String message = "Enter the sentnce";
-        int size = lines.size();
-        for (int i = 0; i < size; i++) {
-            if(i<251) continue;
-            String line = lines.get(i);
-            if (line.length() > 0) {
-                try {
-//                    System.out.println(line);
-                    if (instance.isPermissionSentnce(line)) {
-                        System.out.println(i + "| Describes Permission!");
-                        out.write(i + " Describes Permission!\n");
-                        out.flush();
-                    } else {
-                        System.out.println(i + " Does Not Describe Permission!");
-                        out.write(i + "| Does Not Describe Permission!\n");
-                        out.flush();
-                    }
-                } catch (Exception e) {
-                    System.out.println("error" + i);
-//                    out.write(i + " | error");
-                }
-            }
-        }
-        try {
-            out.flush();
-            out.close();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 	public boolean isPermissionSentnce(String sentnce) {
 
@@ -113,15 +184,15 @@ public class Whyper {
 		List<ITuple> tList;
 		switch (permission) {
 		case Read_Contact:
-			a = k.fetchAtom("contact");
-			tList = searchAtom(t, a.getSynonyms(),new ArrayList<ITuple>());
-			for (ITuple t1 : tList) {
-				if ((t1 != null)
-						&& (isUserOwned(t, t1) || isAction(a.getActions(), t, t1))
-						|| isAugumentedAction(a.getActions(), t, t1)) {
-					return true;
-				}
-			}
+//			a = k.fetchAtom("contact");
+//			tList = searchAtom(t, a.getSynonyms(),new ArrayList<ITuple>());
+//			for (ITuple t1 : tList) {
+//				if ((t1 != null)
+//						&& (isUserOwned(t, t1) || isAction(a.getActions(), t, t1))
+//						|| isAugumentedAction(a.getActions(), t, t1)) {
+//					return true;
+//				}
+//			}
 
 			a = k.fetchAtom("sms");
 			tList = searchAtom(t, a.getSynonyms(), new ArrayList<ITuple>());
@@ -132,14 +203,14 @@ public class Whyper {
 					return true;
 			}
 			
-			a = k.fetchAtom("email");
-			tList = searchAtom(t, a.getSynonyms(), new ArrayList<ITuple>());
-			for (ITuple t1 : tList) {
-				if ((t1 != null)
-						&& (isUserOwned(t, t1) || isAction(a.getActions(), t, t1))
-						|| isAction(a.getActions(), t, t1))
-					return true;
-			}
+//			a = k.fetchAtom("email");
+//			tList = searchAtom(t, a.getSynonyms(), new ArrayList<ITuple>());
+//			for (ITuple t1 : tList) {
+//				if ((t1 != null)
+//						&& (isUserOwned(t, t1) || isAction(a.getActions(), t, t1))
+//						|| isAction(a.getActions(), t, t1))
+//					return true;
+//			}
 			break;
 
 		case Read_Calendar: {

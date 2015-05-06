@@ -12,7 +12,7 @@ import edu.ncsu.csc.ase.dristi.datastructure.Tuple;
 import edu.ncsu.csc.ase.dristi.heuristics.semantic.WordNetSimilarity;
 import edu.ncsu.csc.ase.dristi.knowledge.Knowledge;
 import edu.ncsu.csc.ase.dristi.knowledge.KnowledgeAtom;
-import edu.stanford.nlp.trees.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraph;
 
 public class KnowledgeAnnotator 
 {

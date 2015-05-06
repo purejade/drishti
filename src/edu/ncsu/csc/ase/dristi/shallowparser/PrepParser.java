@@ -8,7 +8,7 @@ import edu.ncsu.csc.ase.dristi.datastructure.type.RelationType;
 import edu.ncsu.csc.ase.dristi.util.TupleUtil;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.trees.GrammaticalRelation;
-import edu.stanford.nlp.trees.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraph;
 
 public class PrepParser extends AbstractParser 
 {

@@ -7,7 +7,7 @@ import edu.ncsu.csc.ase.dristi.datastructure.Relation;
 import edu.ncsu.csc.ase.dristi.datastructure.Tuple;
 import edu.ncsu.csc.ase.dristi.datastructure.type.RelationType;
 import edu.stanford.nlp.ling.IndexedWord;
-import edu.stanford.nlp.trees.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraph;
 
 public class AgentParser extends AbstractParser
 {

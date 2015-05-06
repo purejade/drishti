@@ -24,9 +24,9 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
-import edu.stanford.nlp.trees.semgraph.SemanticGraph;
-import edu.stanford.nlp.trees.semgraph.SemanticGraphCoreAnnotations.BasicDependenciesAnnotation;
-import edu.stanford.nlp.trees.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.BasicDependenciesAnnotation;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
 import edu.stanford.nlp.util.CoreMap;
 //import edu.washington.cs.knowitall.extractor.ReVerbExtractor;
 //import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
@@ -49,7 +49,7 @@ public class Main
 	
 	private Main()
 	{
-		 // creates a StanfordCoreNLP object, with POS tagging, lemmatization, NER, parsing, and coreference resolution 
+		 // creates a StanfordCoreNLP object, with POS tagging, lemmatization, NER, parsing, and coreference resolution
 	    Properties props = new Properties();
 	    props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
 	    pipeline = new StanfordCoreNLP(props);
@@ -103,9 +103,10 @@ public class Main
 			{
 				
 				System.out.println(m.parse(s));
-				System.out.println("Enter The Sentnce =>");
+                break;
+//				System.out.println("Enter The Sentnce =>");
 			
-				s = br.readLine();
+//				s = br.readLine();
 			}
 			 
 		}

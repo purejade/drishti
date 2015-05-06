@@ -112,6 +112,7 @@ public class Tuple  extends ITuple
 		
 	}
 
+    // find the specialized tuple from the current tuple
 	public ITuple findParent(ITuple tuple) 
 	{
 		ITuple retVal = null;

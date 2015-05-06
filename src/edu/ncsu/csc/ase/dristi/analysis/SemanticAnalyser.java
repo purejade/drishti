@@ -16,7 +16,7 @@ import edu.ncsu.csc.ase.dristi.logging.MyLoggerFactory;
 import edu.ncsu.csc.ase.dristi.util.ConsoleUtil;
 import edu.ncsu.csc.ase.dristi.util.FileUtilExcel;
 import edu.stanford.nlp.trees.Tree;
-import edu.stanford.nlp.trees.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraph;
 
 /**
  * This Class contains logic to perform Semantic Analysis of REST API Text
@@ -69,10 +69,10 @@ public class SemanticAnalyser
 		
 		
 		List<SemanticGraph> semGraphList = new ArrayList<SemanticGraph>();
-		
+//		System.out.println(senList.size());
 		for(String sen: senList)
 		{
-			System.out.println(sen);
+//			System.out.println(sen);
 			semGraphList.addAll(parser.getStanfordDependencies(sen));
 		}
 		
@@ -81,7 +81,7 @@ public class SemanticAnalyser
 		{
 			try{
 				ITuple t = TextAnalysisEngine.parse(semGraph);
-				System.out.println(t.toString());
+//				System.out.println(t.toString());
 		//		conceptList.addAll(getConcept(t));
 			}
 			catch(Exception e)

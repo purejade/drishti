@@ -29,6 +29,7 @@ public class TupleUtil
 	 * @return
 	 */
 	public static ITuple merge(ITuple t_first, ITuple t_second, String wrd) {
+
 		ITuple t1 = copy(t_first);
 		ITuple t2 = copy(t_second);
 		ITuple retVal;
@@ -233,7 +234,7 @@ public class TupleUtil
 		}
 		else if(t1.getRelation().getName().trim().equalsIgnoreCase("is"))
 		{
-			System.out.println("here");
+//			System.out.println("here");
 			if(t2.getLeft() == null && t2.getRight().isTerminal() && t2.getRight().getEntity().getName().trim().contains(word))
 			{
 				if(t1.getLeft().isTerminal() && t1.getLeft().getEntity().getName().trim().contains(word))
@@ -291,7 +292,7 @@ public class TupleUtil
 		String message = "New Case encountered! \n No place for new tuples in existing tuples \n["
 				+ tuple1 + "]\n[" + tuple2 + "]";
 		logger.error(message);
-		throw new NullPointerException(message);
+//		throw new NullPointerException(message);
 	}
 	
 	/**
